@@ -12,6 +12,7 @@ const UserSchema = new Schema(
       type: String,
       required: true,
       unique: true,
+      match: [/.+@.+\..+/],
       trim: true
     },
     thoughts: [
@@ -39,7 +40,7 @@ const UserSchema = new Schema(
 
 // Gets total count of comments and replies
 UserSchema.virtual('friendCount').get(function() {
-  return this.friends.reduce((total, friend) => total + user.friends.length + 1, 0);
+  return this.friends.reduce((total, friend) => total + friend.length + 1, 0);
 });
 
 // create the User model using the UserSchema

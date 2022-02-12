@@ -3,7 +3,6 @@ const dateFormat = require('../utils/dateFormat');
 
 const ReactionSchema = new Schema(
   {
-    // Sets custom ID to avoid conflict with parent comment _id
     reactionId: {
       type: Schema.Types.ObjectId,
       default: () => new Types.ObjectId()
@@ -11,7 +10,8 @@ const ReactionSchema = new Schema(
     reactionBody: {
       type: String,
       required: true,
-      trim: true
+      minlength: 1,
+      maxlength: 280
     },
     username: {
       type: String,
@@ -30,24 +30,24 @@ const ReactionSchema = new Schema(
   }
 );
 
-const CommentSchema = new Schema(
+const ThoughtSchema = new Schema(
   {
-    writtenBy: {
-      type: String,
-      required: true
-    },
-    commentBody: {
+    thoughtText: {
       type: String,
       required: true,
-      trim: true
+      minlength: 1,
+      maxlength: 280
     },
     createdAt: {
       type: Date,
       default: Date.now,
       get: createdAtVal => dateFormat(createdAtVal)
     },
-    // Uses ReplySchema to validate data for a reply
-    replies: [ReplySchema]
+    username: {
+      type: String,
+      required: true
+    },
+    reactions: [ReactionSchema]
   },
   {
     toJSON: {
@@ -58,11 +58,11 @@ const CommentSchema = new Schema(
   }
 );
 
-// Gets total count of comments and replies
-CommentSchema.virtual('replyCount').get(function() {
-  return this.replies.length;
+// Gets total count of Thoughts and Reactions
+ThoughtSchema.virtual('reactionCount').get(function() {
+  return this.reactions.length;
 });
 
-const Comment = model('Comment', CommentSchema);
+const Thought = model('Thought', ThoughtSchema);
 
-module.exports = Comment;
+module.exports = Thought;
