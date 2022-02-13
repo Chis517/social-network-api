@@ -10,16 +10,16 @@ const {
 } = require('../../controllers/thought-controller');
 
 
-router.route('/thoughts')
+router.route('/')
   .get(getAllThoughts)
   .post(createThought);
 
-router.route('thoughts/:thoughtId')
+router.route('/:thoughtId')
     .get(getThoughtById)
     .put(updateThought)
     .delete(deleteThought);
 
-router.route('thoughts/:thoughtId/reactions')
+router.route('/:thoughtId/reactions')
   .post(addReaction)
   .delete(deleteReaction);
 

@@ -10,16 +10,16 @@ const {
 } = require('../../controllers/user-controller');
 
 
-router.route('/users')
+router.route('/')
     .get(getAllUsers)
     .post(createUser);
 
-router.route('/users/:id')
+router.route('/:id')
     .get(getUserById)
     .put(updateUser)
     .delete(deleteUser);
 
-router.route('/users/:id/friends/:friendId')
+router.route('/:id/friends/:friendId')
   .post(addFriend)
   .delete(deleteFriend);
 
