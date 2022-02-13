@@ -11,7 +11,6 @@ const userController = {
       .sort({ _id: -1 })
       .then(dbUserData => res.json(dbUserData))
       .catch(err => {
-        console.log(err);
         res.status(400).json(err);
       });
   },
@@ -30,17 +29,15 @@ const userController = {
         }
         res.json(dbUserData)
       })
-      .catch(err => {
-        console.log(err);
-        res.sendStatus(400).json(err);
-      });
+      .catch(err => res.status(400).json(err));
   },
 
   // Create a User
   createUser({ body }, res) {
     User.create(body)
       .then(dbUserData => res.json(dbUserData))
-      .catch(err => res.status(400).json(err));
+      .catch(err => res.status(400).json(err)
+    );
   },
 
   // Update User by ID
@@ -56,7 +53,8 @@ const userController = {
         }
         res.json(dbUserData);
       })
-      .catch(err => res.status(400).json(err));
+      .catch(err => res.status(400).json(err)
+    );
   },
 
   // Delete User by ID
@@ -69,7 +67,8 @@ const userController = {
         }
         res.json(dbUserData);
       })
-      .catch(err => res.status(400).json(err));
+      .catch(err => res.status(400).json(err)
+    );
   },
 
   // Add a Friend
@@ -105,7 +104,7 @@ const userController = {
       }
       res.json(dbUserData);
     })
-    .catch(err => res.status(400).json(err));
+    .catch(err => res.json(err));
   }
 };
 
