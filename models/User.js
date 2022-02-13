@@ -17,13 +17,13 @@ const UserSchema = new Schema(
     },
     thoughts: [
       {
-        type: Schema.Types.ThoughtId,
+        type: Schema.Types.objectId,
         ref: 'Thought'
       }
     ],
     friends: [
       {
-        type: Schema.Types.UserId,
+        type: Schema.Types.objectId,
         ref: 'User'
       }
     ]
@@ -38,12 +38,12 @@ const UserSchema = new Schema(
   }
 );
 
-// Gets total count of comments and replies
+// Gets total count of Friends
 UserSchema.virtual('friendCount').get(function() {
-  return this.friends.reduce((total, friend) => total + friend.length + 1, 0);
+  return this.friends.length;
 });
 
-// create the User model using the UserSchema
+// Create the User model using the UserSchema
 const User = model('User', UserSchema);
 
 module.exports = User;

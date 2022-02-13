@@ -1,7 +1,7 @@
 const { User } = require('../models');
 
 const userController = {
-  // get all Users
+  // Get all Users
   getAllUsers(req, res) {
     User.find({})
       .populate({ path: 'thoughts', select: '-__v' })
@@ -15,7 +15,7 @@ const userController = {
       });
   },
 
-  // get a User by ID
+  // Get a User by ID
   getUserById({ params }, res) {
     User.findOne({ _id: params.id })
       .populate({ path: 'thoughts', select: '-__v' })
@@ -24,7 +24,7 @@ const userController = {
       .sort({ _id: -1 })
       .then(dbUserData => {
         if (!dbUserData) {
-          res.status(404).json({ message: 'No user found with this ID!' });
+          res.status(404).json({ message: 'No User found with this ID!' });
           return;
         }
         res.json(dbUserData)
@@ -42,9 +42,12 @@ const userController = {
       .catch(err => res.status(400).json(err));
   },
 
-  // update User by ID
+  // Update User by ID
   updateUser({ params, body }, res) {
-    User.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
+    User.findOneAndUpdate(
+      { _id: params.id },
+      body,
+      { new: true, runValidators: true })
       .then(dbUserData => {
         if (!dbUserData) {
           res.status(404).json({ message: 'No User found with this ID!' });
@@ -55,7 +58,7 @@ const userController = {
       .catch(err => res.status(400).json(err));
   },
 
-  // delete User by ID
+  // Delete User by ID
   deleteUser({ params }, res) {
     User.findByIdAndDelete({ _id: params.id })
       .then(dbUserData => {
@@ -68,9 +71,12 @@ const userController = {
       .catch(err => res.status(400).json(err));
   },
 
-  // Add a friend
+  // Add a Friend
   addFriend({ params }, res) {
-    User.findOneAndUpdate({ _id: params.id }, { $push: { friends: params.friendId } }, { new: true })
+    User.findOneAndUpdate(
+      { _id: params.id },
+      { $push: { friends: params.friendId } },
+      { new: true })
       .populate({ path: 'friends', select: ('-__v') })
       .select('-__v')
       .then(dbUserData => {
@@ -83,14 +89,17 @@ const userController = {
       .catch(err => res.json(err));
   },
 
-  // Delete a friend
+  // Delete a Friend
   deleteFriend({ params }, res) {
-    User.findOneAndUpdate({_id: params.id}, {$pull: { friends: params.friendId}}, {new: true})
+    User.findOneAndUpdate(
+      { _id: params.id },
+      { $pull: { friends: params.friendId } },
+      { new: true })
     .populate({path: 'friend', select: '-__v'})
     .select('-__v')
     .then(dbUserData => {
       if(!dbUserData){
-        res.status(404).json({ message: 'No user with this particular Id!'});
+        res.status(404).json({ message: 'No User found with this ID!'});
         return;
       }
       res.json(dbUserData);
